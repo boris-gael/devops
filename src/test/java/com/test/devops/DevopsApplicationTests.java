@@ -11,7 +11,7 @@ class DevopsApplicationTests {
 
 	@Test
 	void contextLoads() {
-		assertThat("2").isInstanceOf(String.class);
+		assertThat(Double.valueOf(2)).isGreaterThan(1);
 	}
 
 }
