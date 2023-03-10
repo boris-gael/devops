@@ -1,4 +1,4 @@
-FROM java:8u20
+FROM adoptopenjdk/maven-openjdk11:latest
 
 COPY target/devops-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
