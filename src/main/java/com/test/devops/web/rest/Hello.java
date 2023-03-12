@@ -22,7 +22,7 @@ public class Hello {
 
     @GetMapping("/goodbye")
     public ResponseEntity<String> goobye(@RequestParam String name) {
-        return ResponseEntity.ok("Goodbye " + name + "!");
+        return ResponseEntity.ok("Goodbye " + name + "! I'am going home.");
     }
 
 }
