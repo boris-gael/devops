@@ -20,4 +20,9 @@ public class Hello {
         return ResponseEntity.ok("Hello " + name + ", how are you?");
     }
 
+    @GetMapping("/goodbye")
+    public ResponseEntity<String> goobye(@RequestParam String name) {
+        return ResponseEntity.ok("Goodbye " + name + "!");
+    }
+
 }
