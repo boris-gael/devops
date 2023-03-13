@@ -7,6 +7,7 @@ pipeline {
         registry = 'ndongboris/devops' //'430965556548.dkr.ecr.eu-west-3.amazonaws.com/devops'
         registryCredentials = 'jenkins-dockerhub-credentials'
         dockerImage = ''
+        profile = 'dev'
     }
     stages {
         stage("Checkout project") {
@@ -16,7 +17,7 @@ pipeline {
         }
         stage("Build package") {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -P+profile'
             }
         }
         stage("Sonarqube analysis") {
