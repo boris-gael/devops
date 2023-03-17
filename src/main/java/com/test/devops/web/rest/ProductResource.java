@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class ProductResource {
 
     @PostMapping("publish")
     public ResponseEntity<String> publish(@RequestParam(defaultValue = "Keyboard!") String message) {
-        CompletableFuture<String> future = kafkaTemplate.send(topicName, message);
+        ListenableFuture<String> future = kafkaTemplate.send(topicName, message);
         return ResponseEntity.ok(future.isDone() ? "ok" : "nok");
     }
 
