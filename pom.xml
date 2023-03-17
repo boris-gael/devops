@@ -14,7 +14,7 @@
 	<name>devops</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<lombok.version>1.18.24</lombok.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<kafka.version>3.0.2</kafka.version>
