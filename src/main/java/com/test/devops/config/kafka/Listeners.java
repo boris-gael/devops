@@ -14,9 +14,9 @@ public class Listeners {
     @Autowired
     private ProductService productService;
 
-    @KafkaListener(
-            topics = "stringTopic"
-    )
+//    @KafkaListener(
+//            topics = "stringTopic"
+//    )
     void listener(String data, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
         System.out.println("############################## Listener received " + data + " from partition: " + partition);
         productService.createProduct(ProductDTO.builder().name(data).description("").price(Double.valueOf(data.length())).build());

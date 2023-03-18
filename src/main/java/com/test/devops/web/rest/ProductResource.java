@@ -1,5 +1,8 @@
 package com.test.devops.web.rest;
 
+import com.test.devops.aop.annotation.ApiUrl;
+import com.test.devops.domain.payload.ApiResponse;
+import com.test.devops.exception.DevopsExeption;
 import com.test.devops.service.ProductService;
 import com.test.devops.service.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +14,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/products")
@@ -29,14 +29,31 @@ public class ProductResource {
     private final KafkaTemplate kafkaTemplate;
 
     @PostMapping("/save")
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.createProduct(productDTO));
+    public ResponseEntity<Object> save(@RequestBody ProductDTO productDTO) {
+        try {
+            return ResponseEntity.ok(productService.createProduct(productDTO));
+        } catch (DevopsExeption ex) {
+            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+        }
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ProductDTO>> getAll() {
-        log.info("Get list of products");
-        return ResponseEntity.ok(productService.findAll());
+    public ResponseEntity<?> getAll() {
+        try {
+            return ResponseEntity.ok(productService.findAll());
+        } catch (DevopsExeption ex) {
+            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+        }
+    }
+
+    @GetMapping("/{id}")
+    @ApiUrl("/api/products/{id}")
+    public ResponseEntity<Object> getOneById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(productService.findById(id));
+        } catch (DevopsExeption ex) {
+            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+        }
     }
 
     @PostMapping("publish")
