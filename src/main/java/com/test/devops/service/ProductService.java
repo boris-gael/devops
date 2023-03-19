@@ -13,4 +13,7 @@ public interface ProductService {
 
     ProductDTO findById(Long id) throws DevopsExeption;
 
+    List<ProductDTO> saveAll(List<ProductDTO> productDTOS) throws DevopsExeption;
+
+    String loadProductsBatch() throws DevopsExeption;
 }

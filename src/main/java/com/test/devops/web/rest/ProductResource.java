@@ -1,10 +1,10 @@
 package com.test.devops.web.rest;
 
 import com.test.devops.aop.annotation.ApiUrl;
-import com.test.devops.domain.payload.ApiResponse;
 import com.test.devops.exception.DevopsExeption;
 import com.test.devops.service.ProductService;
 import com.test.devops.service.dto.ProductDTO;
+import com.test.devops.service.dto.payload.ApiResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ProductResource {
         try {
             return ResponseEntity.ok(productService.createProduct(productDTO));
         } catch (DevopsExeption ex) {
-            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+            return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
         }
     }
 
@@ -42,7 +42,7 @@ public class ProductResource {
         try {
             return ResponseEntity.ok(productService.findAll());
         } catch (DevopsExeption ex) {
-            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+            return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
         }
     }
 
@@ -52,7 +52,7 @@ public class ProductResource {
         try {
             return ResponseEntity.ok(productService.findById(id));
         } catch (DevopsExeption ex) {
-            return ResponseEntity.badRequest().body(new ApiResponse(ex));
+            return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
         }
     }
 
@@ -60,6 +60,15 @@ public class ProductResource {
     public ResponseEntity<String> publish(@RequestParam(defaultValue = "Keyboard!") String message) {
         ListenableFuture<String> future = kafkaTemplate.send(topicName, message);
         return ResponseEntity.ok(future.isDone() ? "ok" : "nok");
+    }
+
+    @PostMapping("/batch/run")
+    public ResponseEntity<Object> runBatch() {
+        try {
+            return ResponseEntity.ok(productService.loadProductsBatch());
+        } catch (DevopsExeption ex) {
+            return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
+        }
     }
 
 }
