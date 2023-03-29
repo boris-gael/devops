@@ -1,13 +1,13 @@
 package com.test.devops.config.batch;
 
+import com.test.devops.config.ProductBatchProperties;
 import com.test.devops.service.dto.ProductDTO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +17,11 @@ public class ProductItemReader extends FlatFileItemReader<ProductDTO> {
     private final static int LINES_TO_SKIP = 1;
     private final static String STEP_ONE_ITEM_READER_NAME = "step1ItemReader";
 
-    @Value("${batch.products.file.path}")
-    private String filePath = "static/products.csv";
-
-    public ProductItemReader() {
+    public ProductItemReader(ProductBatchProperties productBatchProperties) {
         super();
         this.setName(STEP_ONE_ITEM_READER_NAME);
         this.setLinesToSkip(LINES_TO_SKIP);
-        this.setResource(new ClassPathResource(filePath));
+        this.setResource(new ClassPathResource(productBatchProperties.getFilePath()));
         this.setLineMapper(getProductDTOLineMapper());
     }
 

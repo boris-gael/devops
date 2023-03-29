@@ -47,7 +47,8 @@ public class ProductResource {
     }
 
     @GetMapping("/{id}")
-    @ApiUrl("/api/products/{id}")
+    @ApiUrl("/api/products/{1}")
+    @ApiUrl("/api/products/{2}")
     public ResponseEntity<Object> getOneById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(productService.findById(id));
@@ -60,15 +61,6 @@ public class ProductResource {
     public ResponseEntity<String> publish(@RequestParam(defaultValue = "Keyboard!") String message) {
         ListenableFuture<String> future = kafkaTemplate.send(topicName, message);
         return ResponseEntity.ok(future.isDone() ? "ok" : "nok");
-    }
-
-    @PostMapping("/batch/run")
-    public ResponseEntity<Object> runBatch() {
-        try {
-            return ResponseEntity.ok(productService.loadProductsBatch());
-        } catch (DevopsExeption ex) {
-            return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
-        }
     }
 
 }

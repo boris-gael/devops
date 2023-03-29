@@ -1,5 +1,6 @@
 package com.test.devops.config.batch;
 
+import com.test.devops.config.ProductBatchProperties;
 import com.test.devops.service.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -10,9 +11,12 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 @Configuration
 @EnableBatchProcessing
@@ -20,11 +24,8 @@ import org.springframework.context.annotation.Configuration;
 public class SpringBatchConfig {
     private final static String STEP_ONE_NAME = "step1";
 
-    @Value("${spring.batch.job.names}")
-    private String jobName;
-
-    @Value("${batch.chunk-value}")
-    private int chunkValue;
+    private final BatchProperties batchProperties;
+    private final ProductBatchProperties productBatchProperties;
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -33,9 +34,10 @@ public class SpringBatchConfig {
     private final ItemWriter<ProductDTO> productItemWriter;
 
     @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Step step() {
         return stepBuilderFactory.get(STEP_ONE_NAME)
-                .<ProductDTO, ProductDTO>chunk(chunkValue)
+                .<ProductDTO, ProductDTO>chunk(productBatchProperties.getChunkValue())
                 .reader(productItemReader)
                 .processor(productItemProcessor)
                 .writer(productItemWriter)
@@ -43,8 +45,9 @@ public class SpringBatchConfig {
     }
 
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public Job job(Step step1) {
-        return jobBuilderFactory.get(jobName).start(step1).build();
+        return jobBuilderFactory.get(batchProperties.getJob().getNames()).start(step1).build();
     }
 
 }

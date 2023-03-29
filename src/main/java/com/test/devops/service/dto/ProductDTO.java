@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDTO {
+public class ProductDTO implements Cloneable{
 
     private Long id;
     @NonNull
@@ -15,4 +15,8 @@ public class ProductDTO {
     @NonNull
     private Double price;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

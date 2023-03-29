@@ -1,8 +1,11 @@
 package com.test.devops.aop;
 
+import com.test.devops.aop.annotation.ApiUrl;
+import com.test.devops.exception.DevopsExeption;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -13,6 +16,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 @Component
 @Aspect
@@ -92,21 +96,23 @@ public class LoggingAspect {
 
 //    @After(value = "noParamsAnnotationPointCut()")
 //    public void logAfterAnnotationPointCut(JoinPoint joinPoint) {
-//        System.out.println("===============> logAfterAnnotationPointCut: " + joinPoint.getSignature().getName());
+//        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+//        String apiUrl = method.getAnnotation(ApiUrl.class).value();
+//        System.out.println("===============> logAfterAnnotationPointCut: " + method.getName() + "with @ApiUrl(" + apiUrl + ")");
 //    }
 
-//    @Around(value = "noParamsAnnotationPointCut()")
-//    public Object logAroundAnnotationPointCut(ProceedingJoinPoint joinPoint) {
-//        ApiUrl apiUrl = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(ApiUrl.class);
-//        System.out.println("===============> logAroundAnnotationPointCut of " + joinPoint.getSignature().getName()
-//                + ", api = " + apiUrl.value());
-//        try {
-//            return joinPoint.proceed();
-//        } catch (Throwable throwable) {
-//            System.out.println("===============> Catch error from annotation-based around aspect");
-//            logger(joinPoint).error("Error: " + throwable.getMessage());
-//            throw new DevopsExeption(throwable.getMessage(), throwable.getCause());
-//        }
-//    }
+    @Around(value = "noParamsAnnotationPointCut()")
+    public Object logAroundAnnotationPointCut(ProceedingJoinPoint joinPoint) {
+        ApiUrl apiUrl = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(ApiUrl.class);
+        System.out.println("===============> logAroundAnnotationPointCut of " + joinPoint.getSignature().getName()
+                + ", api = " + apiUrl.value());
+        try {
+            return joinPoint.proceed();
+        } catch (Throwable throwable) {
+            System.out.println("===============> Catch error from annotation-based around aspect");
+            logger(joinPoint).error("Error: " + throwable.getMessage());
+            throw new DevopsExeption(throwable.getMessage(), throwable.getCause());
+        }
+    }
 
 }
