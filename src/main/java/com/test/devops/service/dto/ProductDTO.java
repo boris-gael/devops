@@ -14,6 +14,7 @@ public class ProductDTO implements Cloneable{
     private String description;
     @NonNull
     private Double price;
+    private CategoryDTO categoryDTO;
 
     @Override
     public Object clone() throws CloneNotSupportedException {
