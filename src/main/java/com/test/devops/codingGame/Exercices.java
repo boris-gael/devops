@@ -73,4 +73,8 @@ public class Exercices {
         }
     }
 
+    public static int sumRange(int[] ints) {
+        return Arrays.stream(ints).filter(n -> n>=10 && n<=100).sum();
+    }
+
 }

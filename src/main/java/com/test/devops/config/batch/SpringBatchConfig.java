@@ -13,10 +13,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.*;
 
 @Configuration
 @EnableBatchProcessing
@@ -35,6 +32,8 @@ public class SpringBatchConfig {
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
+//    @Conditional(Class<A extends Condition>)
+//    @ConditionalOn/*Property,Expression,Bean,Class,Java,WarDeployment*/
     public Step step() {
         return stepBuilderFactory.get(STEP_ONE_NAME)
                 .<ProductDTO, ProductDTO>chunk(productBatchProperties.getChunkValue())

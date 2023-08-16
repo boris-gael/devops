@@ -1,8 +1,6 @@
 package com.test.devops.service.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -13,30 +11,30 @@ public class CategoryDTO {
     private String name;
     private String description;
 
-    private CategoryDTO(CategoryDTOBuilber categoryDTOBuilber) {
-        this.id = categoryDTOBuilber.id;
-        this.name = categoryDTOBuilber.name;
-        this.description = categoryDTOBuilber.description;
+    private CategoryDTO(CategoryDTOBuilder CategoryDTOBuilder) {
+        this.id = CategoryDTOBuilder.id;
+        this.name = CategoryDTOBuilder.name;
+        this.description = CategoryDTOBuilder.description;
     }
 
-    public static class CategoryDTOBuilber {
+    public static class CategoryDTOBuilder {
         private Long id;
         private String name;
         private String description;
 
-        public CategoryDTOBuilber() {}
+        public CategoryDTOBuilder() {}
 
-        public CategoryDTOBuilber id(Long id) {
+        public CategoryDTOBuilder id(Long id) {
             this.id = id;
             return this;
         }
 
-        public CategoryDTOBuilber name(String name) {
+        public CategoryDTOBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public CategoryDTOBuilber description(String description) {
+        public CategoryDTOBuilder description(String description) {
             this.description = description;
             return this;
         }
@@ -46,8 +44,8 @@ public class CategoryDTO {
         }
     }
 
-    public static CategoryDTOBuilber builder() {
-        return new CategoryDTOBuilber();
+    public static CategoryDTOBuilder builder() {
+        return new CategoryDTOBuilder();
     }
 
 }

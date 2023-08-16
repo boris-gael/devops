@@ -7,10 +7,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.ArrayList;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,6 +59,22 @@ class codingGamesTest {
     @CsvSource({"'4,2','6'", "'1.1,2.2,3.8','7.1'"})
     void stringCalculator(String chaine, String result) {
         assertEquals(result, Exercices.stringCalculator(chaine));
+    }
+
+    @Test
+    void sumRange() {
+        int[] ints = {0,1,6,10,15,100,123,1555};
+        assertEquals(125, Exercices.sumRange(ints));
+    }
+
+    @Test
+    void training() throws ParseException {
+        Map<Integer, Integer> treeMap = new HashMap<>();
+        treeMap.put(3,3);
+        treeMap.put(2,1);
+        treeMap.put(1,2);
+        System.out.println(treeMap.values());
+        assertEquals("", "");
     }
 
 }
