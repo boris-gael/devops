@@ -1,13 +1,12 @@
 package com.test.devops.config.batch;
 
-import com.test.devops.config.ProductBatchProperties;
+import com.test.devops.config.properties.ProductBatchProperties;
 import com.test.devops.service.dto.ProductDTO;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,8 @@ public class ProductResource {
     private final KafkaTemplate kafkaTemplate;
 
     @PostMapping("/save")
-    public ResponseEntity<Object> save(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Object> save(@RequestBody ProductDTO productDTO, Authentication auth) {
+        log.info("Username and authorities: {}, {}", auth.getName(), auth.getAuthorities());
         try {
             return ResponseEntity.ok(productService.createProduct(productDTO));
         } catch (DevopsExeption ex) {
@@ -38,8 +41,10 @@ public class ProductResource {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAll() {
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ResponseEntity<?> getAll(Authentication authentication) {
         try {
+            log.info("User: {}", authentication.getName());
             return ResponseEntity.ok(productService.findAll());
         } catch (DevopsExeption ex) {
             return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
@@ -49,6 +54,7 @@ public class ProductResource {
     @GetMapping("/{id}")
     @ApiUrl("/api/products/{1}")
     @ApiUrl("/api/products/{2}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> getOneById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(productService.findById(id));

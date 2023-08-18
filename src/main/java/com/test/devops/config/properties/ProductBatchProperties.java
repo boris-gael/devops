@@ -1,4 +1,4 @@
-package com.test.devops.config;
+package com.test.devops.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

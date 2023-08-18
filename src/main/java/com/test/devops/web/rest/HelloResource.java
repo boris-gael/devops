@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/hello")
-public class Hello {
+public class HelloResource {
 
     @GetMapping("")
     public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("Hello from devops test app");
+        return ResponseEntity.ok("HelloResource from devops test app");
     }
 
     @GetMapping("/someone")
     public ResponseEntity<String> helloSomeone(@RequestParam String name) {
-        return ResponseEntity.ok("Hello " + name + ", how are you?");
+        return ResponseEntity.ok("HelloResource " + name + ", how are you?");
     }
 
     @GetMapping("/goodbye")

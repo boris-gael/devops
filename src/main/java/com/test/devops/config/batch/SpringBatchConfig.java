@@ -1,6 +1,6 @@
 package com.test.devops.config.batch;
 
-import com.test.devops.config.ProductBatchProperties;
+import com.test.devops.config.properties.ProductBatchProperties;
 import com.test.devops.service.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
