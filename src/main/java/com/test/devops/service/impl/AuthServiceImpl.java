@@ -54,8 +54,8 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities())
         );
-        String accessToken = jwtEncoder.encode(getJwtEncoderParams(authentication, 5)).getTokenValue();
-        String refreshToken = jwtEncoder.encode(getJwtEncoderParams(authentication, 30)).getTokenValue();
+        String accessToken = jwtEncoder.encode(getJwtEncoderParams(authentication, 30)).getTokenValue();
+        String refreshToken = jwtEncoder.encode(getJwtEncoderParams(authentication, 1440)).getTokenValue();
         return Map.of("refreshToken", refreshToken, "accessToken", accessToken);
     }
 

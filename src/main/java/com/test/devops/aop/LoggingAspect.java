@@ -78,7 +78,7 @@ public class LoggingAspect {
         try {
             Object o = joinPoint.proceed();
             Long endTime = System.currentTimeMillis();
-            log.info("======= END PROCEEDING " + method.getName() + ". Duration: " + (endTime-startTime)/1000 + "s =======");
+            log.info("======= END PROCEEDING " + method.getName() + ". Duration: " + (endTime-startTime) + "ms =======");
             return o;
         } catch (Throwable th) {
             log.error("Error from aop advice: " + th.getMessage());

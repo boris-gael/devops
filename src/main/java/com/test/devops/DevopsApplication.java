@@ -5,8 +5,10 @@ import com.test.devops.config.properties.RSAKeysProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
+@EnableCaching
 @EnableConfigurationProperties({ProductBatchProperties.class, RSAKeysProperties.class})
 public class DevopsApplication {
 

@@ -1,5 +1,8 @@
 package com.test.devops.web.rest;
 
+import com.hazelcast.core.DistributedObject;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.test.devops.aop.annotation.ApiUrl;
 import com.test.devops.exception.DevopsExeption;
 import com.test.devops.service.ProductService;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +20,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -44,8 +51,15 @@ public class ProductResource {
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ResponseEntity<?> getAll(Authentication authentication) {
         try {
-            log.info("User: {}", authentication.getName());
-            return ResponseEntity.ok(productService.findAll());
+            HazelcastInstance hazelcastInstance = Hazelcast.getAllHazelcastInstances()
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new DevopsExeption("No Hazelcast instance found."));
+
+            log.info("distributed obj size: {}", hazelcastInstance.getDistributedObjects().size());
+            List<ProductDTO> productDTOS = productService.findAll();
+            log.info("productDTOS size: {}", productDTOS.size());
+            return ResponseEntity.ok(productDTOS);
         } catch (DevopsExeption ex) {
             return ResponseEntity.badRequest().body(new ApiResponseDTO(ex));
         }
