@@ -1,6 +1,5 @@
 package com.test.devops.config.kafka;
 
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +15,9 @@ public class TopicConfig {
     @Value("${kafka.topic.name}")
     private String topicName;
 
+    @Value("${cdc.schema.history.internal.kafka.topic}")
+    private String cdcSchemaHistoryTopicName;
+
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
@@ -29,6 +31,11 @@ public class TopicConfig {
     @Bean
     public NewTopic newTopic() {
         return new NewTopic(topicName, 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic schemaHistoryTopic() {
+        return new NewTopic(cdcSchemaHistoryTopicName, 1, (short) 1);
     }
 
 }

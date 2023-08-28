@@ -9,7 +9,10 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-@EnableConfigurationProperties({ProductBatchProperties.class, RSAKeysProperties.class})
+@EnableConfigurationProperties({
+		ProductBatchProperties.class,
+		RSAKeysProperties.class
+})
 public class DevopsApplication {
 
 	public static void main(String[] args) {

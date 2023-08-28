@@ -22,6 +22,7 @@
 		<bcpkix.version>1.72</bcpkix.version>
 		<cache.version>3.1.0</cache.version>
 		<hazelcast.version>5.3.1</hazelcast.version>
+		<debezium.version>2.3.0.Final</debezium.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -93,6 +94,16 @@
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast</artifactId>
 <!--			<version>${hazelcast.version}</version>-->
+		</dependency>
+		<dependency>
+			<groupId>io.debezium</groupId>
+			<artifactId>debezium-embedded</artifactId>
+			<version>${debezium.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.debezium</groupId>
+			<artifactId>debezium-connector-mysql</artifactId>
+			<version>${debezium.version}</version>
 		</dependency>
 		<!--<dependency>
 			<groupId>org.springdoc</groupId>

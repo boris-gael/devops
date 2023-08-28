@@ -9,6 +9,7 @@ import com.test.devops.service.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +33,24 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Override
-    @Cacheable("products")
-    public List<ProductDTO> findAll() throws DevopsExeption {
+    private List<ProductDTO> findAllProducts() throws DevopsExeption {
         try {
             return productRepository.findAll().stream().map(productMapper::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             throw new DevopsExeption(e.getMessage(), e.getCause());
         }
+    }
+
+    @Override
+    @Cacheable("products")
+    public List<ProductDTO> findAll() throws DevopsExeption {
+        return findAllProducts();
+    }
+
+    @Override
+    @CachePut("products")
+    public List<ProductDTO> updateCacheProducts() throws DevopsExeption {
+        return findAllProducts();
     }
 
     @Override

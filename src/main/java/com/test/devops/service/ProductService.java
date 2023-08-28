@@ -11,6 +11,8 @@ public interface ProductService {
 
     List<ProductDTO> findAll() throws DevopsExeption;
 
+    List<ProductDTO> updateCacheProducts() throws DevopsExeption;
+
     ProductDTO findById(Long id) throws DevopsExeption;
 
     List<ProductDTO> saveAll(List<ProductDTO> productDTOS) throws DevopsExeption;
