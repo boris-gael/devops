@@ -1,6 +1,5 @@
 package com.test.devops.web.rest;
 
-import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.test.devops.aop.annotation.ApiUrl;
@@ -8,11 +7,13 @@ import com.test.devops.exception.DevopsExeption;
 import com.test.devops.service.ProductService;
 import com.test.devops.service.dto.ProductDTO;
 import com.test.devops.service.dto.payload.ApiResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +22,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -37,6 +37,11 @@ public class ProductResource {
     private final ProductService productService;
     private final KafkaTemplate kafkaTemplate;
 
+    @Operation(summary = "create new product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product created"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
     @PostMapping("/save")
     public ResponseEntity<Object> save(@RequestBody ProductDTO productDTO, Authentication auth) {
         log.info("Username and authorities: {}, {}", auth.getName(), auth.getAuthorities());

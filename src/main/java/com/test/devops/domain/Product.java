@@ -24,5 +24,9 @@ public class Product {
     @ManyToOne
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
+
 }
 

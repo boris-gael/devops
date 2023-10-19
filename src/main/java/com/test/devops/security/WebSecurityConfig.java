@@ -18,6 +18,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,11 +65,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeRequests(auth -> auth.antMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui-doc.html").permitAll())
                 .authorizeRequests(auth -> auth.antMatchers("/api/auth/**").permitAll())
                 .authorizeRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(auth -> auth.jwt())
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
 //                .httpBasic(Customizer.withDefaults())
                 .build();
     }

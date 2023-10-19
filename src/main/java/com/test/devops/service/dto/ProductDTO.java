@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDTO implements Cloneable{
+public class ProductDTO implements Cloneable {
 
     private Long id;
     @NonNull
